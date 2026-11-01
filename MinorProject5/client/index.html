@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Premier League Service Test Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        .section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        input {
+            padding: 5px;
+            width: 60px;
+            margin-right: 5px;
+        }
+        pre {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 15px;
+            overflow-x: auto;
+            min-height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Premier League API Test Client</h2>
+
+    <div class="section">
+        <h3>1. Clubs</h3>
+        <button onclick="getData('/club')">Get All Clubs</button>
+        ID: <input type="number" id="clubId" value="1">
+        <button onclick="getData('/club/' + document.getElementById('clubId').value)">Get Club By ID</button>
+    </div>
+
+    <div class="section">
+        <h3>2. Managers</h3>
+        <button onclick="getData('/manager')">Get All Managers</button>
+        ID: <input type="number" id="managerId" value="1">
+        <button onclick="getData('/manager/' + document.getElementById('managerId').value)">Get Manager By ID</button>
+    </div>
+
+    <div class="section">
+        <h3>3. Players</h3>
+        <button onclick="getData('/player')">Get All Players</button>
+        ID: <input type="number" id="playerId" value="1">
+        <button onclick="getData('/player/' + document.getElementById('playerId').value)">Get Player By ID</button>
+    </div>
+
+    <h3>Output: <span id="currentUrl">None</span></h3>
+    <pre id="output">Click a button above to fetch data from the service...</pre>
+
+    <script>
+        const baseUrl = "http://localhost:5000/api";
+
+        async function getData(endpoint) {
+            const fullUrl = baseUrl + endpoint;
+            document.getElementById("currentUrl").innerText = fullUrl;
+            document.getElementById("output").innerText = "Loading...";
+
+            try {
+                const response = await fetch(fullUrl);
+                const data = await response.json();
+                document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById("output").innerText = "Error: " + error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>
